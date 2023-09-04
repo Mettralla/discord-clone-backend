@@ -113,5 +113,5 @@ git branch -d nueva-feature
 
 ## ✍️ Autor <a name = "authors"></a>
 - Fernando Maldonado ()
-- Edgardo Lamas ([@Edgardo768])(https://github.com/edgardo768)
+- Edgardo Lamas ([@Edgardo768](https://github.com/edgardo768))
 - Daniel Tejerina ([@mettralla](https://github.com/mettralla)) 
