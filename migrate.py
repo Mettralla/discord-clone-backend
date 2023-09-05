@@ -2,7 +2,9 @@ import mysql.connector
 from decouple import config
 
 # Establish a connection to the database
-conn = mysql.connector.connect(user=config("MYSQL_USER"), password=config("MYSQL_PASSWORD"), host="127.0.0.1")
+conn = mysql.connector.connect(
+    user=config("MYSQL_USER"), password=config("MYSQL_PASSWORD"), host="127.0.0.1"
+)
 cur = conn.cursor()
 
 # Define table creation queries
