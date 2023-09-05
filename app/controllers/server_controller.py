@@ -17,6 +17,6 @@ class ServerController:
     def get_server_by_id(self, server_id):
         """Funcion para obtener el servidor por id"""
         for server in self.servers:
-            if server.id == server_id:
+            if server.server_id == server_id:
                 return server
         return None

@@ -12,7 +12,7 @@ server_controller = ServerController()
 def create_server():
     """Funcion crear server"""
     data = request.json
-    server_id = data.get("id")
+    server_id = data.get("server_id")
     name = data.get("name")
     description = data.get("description")
 
@@ -21,7 +21,7 @@ def create_server():
     return jsonify({"message": "Server created successfully"}), 201
 
 
-@server_bp.route("/get_server/<int:id>", methods=["GET"])
+@server_bp.route("/get_server/<int:server_id>", methods=["GET"])
 def get_server(server_id):
     """Funcion obtener server"""
     server = server_controller.get_server_by_id(server_id)
@@ -29,7 +29,7 @@ def get_server(server_id):
         return (
             jsonify(
                 {
-                    "server_id": server.id,
+                    "server_id": server.server_id,
                     "name": server.name,
                     "description": server.description,
                 }
