@@ -1,7 +1,6 @@
 """Controlador de servidor"""
 
 from ..database import DatabaseConnection
-from ..models.server_model import Server
 
 
 class ServerController:
