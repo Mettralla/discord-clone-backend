@@ -1,22 +1,35 @@
-"""Control del servidor"""
+"""Controlador de servidor"""
 
+from ..database import DatabaseConnection
 from ..models.server_model import Server
 
 
 class ServerController:
-    """Clase control del servidor"""
+    """Clase de controlador de servidor"""
 
-    def __init__(self):
-        self.servers = []
+    def create_server(self, server_name, server_description, owner_id):
+        """Crear servidor"""
+        try:
+            # Crear una conexión a la base de datos
+            db_connection = DatabaseConnection.get_connection()
 
-    def create_server(self, server_id, name, description):
-        """Funcion para crear el servidor"""
-        server = Server(server_id, name, description)
-        self.servers.append(server)
+            # Crear un cursor para ejecutar consultas
+            cursor = db_connection.cursor()
 
-    def get_server_by_id(self, server_id):
-        """Funcion para obtener el servidor por id"""
-        for server in self.servers:
-            if server.server_id == server_id:
-                return server
-        return None
+            # Consulta SQL para insertar un nuevo servidor
+            insert_query = "INSERT INTO servers (server_name, server_description, owner_id) VALUES (%s, %s, %s)"
+            params = (server_name, server_description, owner_id)
+
+            # Ejecutar la consulta SQL
+            cursor.execute(insert_query, params)
+
+            # Confirmar la transacción
+            db_connection.commit()
+
+            # Cerrar el cursor
+            cursor.close()
+
+        except Exception as error:
+            # Manejar cualquier excepción que pueda ocurrir al crear el servidor
+            db_connection.rollback()
+            raise error

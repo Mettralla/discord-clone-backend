@@ -1,5 +1,4 @@
-"""Server bp"""
-
+"""Blueprint del servidor"""
 
 from flask import Blueprint, request, jsonify
 from ..controllers.server_controller import ServerController
@@ -8,33 +7,19 @@ server_bp = Blueprint("server", __name__)
 server_controller = ServerController()
 
 
-@server_bp.route("/create_server", methods=["POST"])
-def create_server():
-    """Funcion crear server"""
-    data = request.json
-    server_id = data.get("server_id")
-    name = data.get("name")
-    description = data.get("description")
+@server_bp.route("/servers", methods=["POST"])
+def create_server_route():
+    """Crear servidor"""
+    # Obtener los datos del servidor desde la solicitud
+    data = request.get_json()
+    server_name = data.get("server_name")
+    server_description = data.get("server_description", "")  # Valor opcional
+    owner_id = data.get("owner_id")
 
-    server_controller.create_server(server_id, name, description)
+    # Puedes agregar lógica de validación de datos aquí si es necesario
 
-    return jsonify({"message": "Server created successfully"}), 201
+    # Llama al método para crear el servidor en el controlador existente
+    server_controller.create_server(server_name, server_description, owner_id)
 
-
-@server_bp.route("/get_server/<int:server_id>", methods=["GET"])
-def get_server(server_id):
-    """Funcion obtener server"""
-    server = server_controller.get_server_by_id(server_id)
-    if server:
-        return (
-            jsonify(
-                {
-                    "server_id": server.server_id,
-                    "name": server.name,
-                    "description": server.description,
-                }
-            ),
-            200,
-        )
-    else:
-        return jsonify({"message": "Server not found"}), 404
+    # Devuelve una respuesta con el código de estado 201 y un mensaje de éxito
+    return jsonify({"message": "Servidor creado exitosamente"}), 201

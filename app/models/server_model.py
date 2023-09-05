@@ -2,9 +2,9 @@
 
 
 class Server:
-    """Clase para el servidor"""
+    """Clase de servidor"""
 
-    def __init__(self, server_id, name, description):
-        self.server_id = server_id
-        self.name = name
-        self.description = description
+    def __init__(self, server_name, server_description, owner_id):
+        self.server_name = server_name
+        self.server_description = server_description
+        self.owner_id = owner_id
