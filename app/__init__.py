@@ -5,7 +5,7 @@ from .routes.user_bp import user_bp
 from .routes.auth_bp import auth_bp
 from .routes.error_handlers import errors
 from .routes.server_bp import server_bp
-
+from .routes.message_bp import message_bp
 
 def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER)
@@ -16,5 +16,6 @@ def init_app():
     app.register_blueprint(auth_bp, url_prefix= '/auth')
     app.register_blueprint(errors)
     app.register_blueprint(server_bp, url_prefix="/server")
+    app.register_blueprint(message_bp, url_prefix= '/message')
 
     return app
