@@ -67,13 +67,13 @@ class User:
     def validate_data(cls, data) -> 'User':
         """Validate user data"""
         new_username = data.get('username')
-        if len(new_username) < 3:
+        if len(new_username) < 3 and not isinstance(new_username, str):
             raise InvalidDataError("Username must have at least three characters")
 
-        new_password = data.get('password')
-        if len(new_password) < 8:
+        new_password = data.get('password') 
+        if len(new_password) < 8 and not isinstance(new_password, str):
             raise InvalidDataError("Password must have at least eight characters")
-        
+
         return User(username = new_username, password = new_password)
 
     @classmethod

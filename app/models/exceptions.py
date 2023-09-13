@@ -54,3 +54,11 @@ class ForbiddenAction(CustomException):
         self.description = description
         self.status_code = 401
         self.name = name
+        
+class ServerError(CustomException):
+    def __init__(self, name="Internal Server Error", description="Internal Server Error"):
+        super().__init__(500, name, description)
+        self.description = description
+        self.status_code = 500
+        self.name = name
+        

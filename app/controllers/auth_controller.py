@@ -3,6 +3,7 @@ from ..models.exceptions import UsernameConflictError, UnauthorizedAccess, Inval
 from functools import wraps
 from flask import request, jsonify, session
 
+
 class AuthController:
     @classmethod
     def register(cls):
