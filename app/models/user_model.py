@@ -41,6 +41,29 @@ class User:
         return users_list
     
     @classmethod
+    def get_user(cls, user_id: int):
+        query = "SELECT user_id, username, image FROM users WHERE user_id = %s"
+        user_data = DatabaseConnection.fetch_one(query, (user_id,))
+        if user_data is not None:
+            return User(
+                user_id = user_data[0],
+                username = user_data[1],
+                image = user_data[2]
+            )
+        else:
+            return None
+    
+    @classmethod
+    def delete_user(cls, user_id: int):
+        query = "DELETE FROM users WHERE user_id = %s"
+        DatabaseConnection.execute_query(query, (user_id,))
+    
+    @classmethod
+    def update_user(cls, params: tuple):
+        query = "UPDATE users SET username = %s, image = %s WHERE user_id = %s"
+        DatabaseConnection.execute_query(query, params)
+
+    @classmethod
     def validate_data(cls, data) -> 'User':
         """Validate user data"""
         new_username = data.get('username')
@@ -54,10 +77,17 @@ class User:
         return User(username = new_username, password = new_password)
 
     @classmethod
-    def exist(cls, username: str) -> bool:
+    def check_user(cls, username: str) -> bool:
         """Check if username is taken"""
         query = "SELECT 1 FROM users WHERE username = %s"
         result = DatabaseConnection.fetch_one(query, (username,))
+        return result is not None
+    
+    @classmethod
+    def exist(cls, user_id: int) -> bool:
+        """Check if user_exist"""
+        query = "SELECT 1 FROM users WHERE user_id = %s"
+        result = DatabaseConnection.fetch_one(query, (user_id,))
         return result is not None
     
     def serialize(self) -> dict:

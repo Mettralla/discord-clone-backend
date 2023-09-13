@@ -31,3 +31,12 @@ class UsernameConflictError(CustomException):
         self.description = description
         self.status_code = 409
         self.name = name
+        
+class NotFound(CustomException):
+    def __init__(self, id: int, model: str):
+        name = f"{model.capitalize()} Not Found"
+        description = f"{model.capitalize()} with id {id} not found"
+        super().__init__(404, name, description)
+        self.description = description
+        self.status_code = 404
+        self.name = name
