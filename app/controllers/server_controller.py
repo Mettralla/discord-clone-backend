@@ -1,34 +1,40 @@
 """Controlador de servidor"""
 
-from ..database import DatabaseConnection
-
+from ..models.server_model import Server
 
 class ServerController:
-    """Clase de controlador de servidor"""
+    servers = []
 
-    def create_server(self, server_name, server_description, owner_id):
-        """Crear servidor"""
-        try:
-            # Crear una conexión a la base de datos
-            db_connection = DatabaseConnection.get_connection()
+    @classmethod
+    def create_server(cls, server_name, server_description, owner_id):
+        server_id = len(cls.servers) + 1
+        server = Server(server_id, server_name, server_description, owner_id)
+        cls.servers.append(server)
+        return server
 
-            # Crear un cursor para ejecutar consultas
-            cursor = db_connection.cursor()
+    @classmethod
+    def update_server(cls, server_id, server_name=None, server_description=None):
+        for server in cls.servers:
+            if server.server_id == server_id:
+                if server_name:
+                    server.server_name = server_name
+                if server_description:
+                    server.server_description = server_description
+                return server
 
-            # Consulta SQL para insertar un nuevo servidor
-            insert_query = "INSERT INTO servers (server_name, server_description, owner_id) VALUES (%s, %s, %s)"
-            params = (server_name, server_description, owner_id)
+    @classmethod
+    def get_all_servers(cls):
+        return cls.servers
 
-            # Ejecutar la consulta SQL
-            cursor.execute(insert_query, params)
+    @classmethod
+    def get_server_by_id(cls, server_id):
+        for server in cls.servers:
+            if server.server_id == server_id:
+                return server
 
-            # Confirmar la transacción
-            db_connection.commit()
-
-            # Cerrar el cursor
-            cursor.close()
-
-        except Exception as error:
-            # Manejar cualquier excepción que pueda ocurrir al crear el servidor
-            db_connection.rollback()
-            raise error
+    @classmethod
+    def delete_server(cls, server_id):
+        for server in cls.servers:
+            if server.server_id == server_id:
+                cls.servers.remove(server)
+                return
