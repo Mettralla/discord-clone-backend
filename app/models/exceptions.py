@@ -40,3 +40,17 @@ class NotFound(CustomException):
         self.description = description
         self.status_code = 404
         self.name = name
+        
+class UnauthorizedAccess(CustomException):
+    def __init__(self, name="Unauthorized Access", description="Login required"):
+        super().__init__(401, name, description)
+        self.description = description
+        self.status_code = 401
+        self.name = name
+        
+class ForbiddenAction(CustomException):
+    def __init__(self, name="Forbidden Action", description="You can't perform this action."):
+        super().__init__(401, name, description)
+        self.description = description
+        self.status_code = 401
+        self.name = name

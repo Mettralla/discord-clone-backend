@@ -90,6 +90,15 @@ class User:
         result = DatabaseConnection.fetch_one(query, (user_id,))
         return result is not None
     
+    def is_registered(self):
+        query = "SELECT user_id, password_digest FROM users WHERE username = %s"
+        user = DatabaseConnection.fetch_one(query, (self.username,))
+        
+        if check_password_hash(user[1], self.password):
+            self.user_id = user[0]
+            return user[0]
+        return False
+    
     def serialize(self) -> dict:
         return {
             'user_id': self.user_id,

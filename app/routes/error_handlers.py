@@ -1,5 +1,5 @@
 from flask import Blueprint
-from ..models.exceptions import InvalidDataError, UsernameConflictError, NotFound
+from ..models.exceptions import InvalidDataError, UsernameConflictError, NotFound, UnauthorizedAccess, ForbiddenAction
 
 errors = Blueprint("errors", __name__)
 
@@ -13,4 +13,12 @@ def handle_username_conflict_error(error):
 
 @errors.app_errorhandler(NotFound)
 def handle_not_found_error(error):
+    return error.get_response()
+
+@errors.app_errorhandler(UnauthorizedAccess)
+def handle_unauthorized_error(error):
+    return error.get_response()
+
+@errors.app_errorhandler(ForbiddenAction)
+def handle_forbidden_action_error(error):
     return error.get_response()
