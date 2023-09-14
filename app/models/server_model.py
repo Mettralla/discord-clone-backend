@@ -4,6 +4,8 @@ from ..database import DatabaseConnection
 
 
 class Server:
+    """Class Server"""
+
     def __init__(self, **kwargs):
         self.server_id = kwargs.get("server_id", None)
         self.server_name = kwargs.get("server_name", None)
@@ -12,12 +14,14 @@ class Server:
 
     @classmethod
     def create_server(cls, server):
+        """Create Server"""
         query = "INSERT INTO servers (server_name, server_description, owner_id) VALUES (%s, %s, %s)"
         params = (server.server_name, server.server_description, server.owner_id)
         DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def get_servers(cls, server_name=None):
+        """Get Servers"""
         if server_name:
             query = "SELECT server_id, server_name, server_description, owner_id FROM servers WHERE server_name LIKE %s"
             params = (f"%{server_name}%",)
@@ -41,6 +45,7 @@ class Server:
 
     @classmethod
     def get_server(cls, server_id):
+        """Get Server"""
         query = "SELECT server_id, server_name, server_description, owner_id FROM servers WHERE server_id = %s"
         server_data = DatabaseConnection.fetch_one(query, (server_id,))
         if server_data is not None:
@@ -56,6 +61,7 @@ class Server:
 
     @classmethod
     def update_server(cls, server_id, params):
+        """Update Server"""
         query = "UPDATE servers SET server_name = %s, server_description = %s WHERE server_id = %s"
         DatabaseConnection.execute_query(
             query,
@@ -64,5 +70,6 @@ class Server:
 
     @classmethod
     def delete_server(cls, server_id):
+        """Delete Server"""
         query = "DELETE FROM servers WHERE server_id = %s"
         DatabaseConnection.execute_query(query, (server_id,))

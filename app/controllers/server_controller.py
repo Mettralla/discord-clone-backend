@@ -6,8 +6,11 @@ from ..models.exceptions import NotFound
 
 
 class ServerController:
+    """Class Server Controller"""
+
     @classmethod
     def create_server(cls):
+        """Create Server"""
         server_data = request.json
         server = Server(
             server_name=server_data.get("server_name"),
@@ -19,6 +22,7 @@ class ServerController:
 
     @classmethod
     def get_servers(cls):
+        """Get Servers"""
         server_name = request.args.get("server_name")
         servers = Server.get_servers(server_name)
         response = {"servers": [], "total": 0}
@@ -42,6 +46,7 @@ class ServerController:
 
     @classmethod
     def get_server(cls, server_id):
+        """Get Server"""
         server = Server.get_server(server_id)
         if server:
             server_dict = {
@@ -56,12 +61,14 @@ class ServerController:
 
     @classmethod
     def update_server(cls, server_id):
+        """Update Server"""
         update_data = request.json
         Server.update_server(server_id, update_data)
         return jsonify({"message": "Server updated successfully"}), 200
 
     @classmethod
     def delete_server(cls, server_id):
+        """Delete Server"""
         if Server.get_server(server_id):
             Server.delete_server(server_id)
             return jsonify({"message": "Server deleted successfully"}), 204
