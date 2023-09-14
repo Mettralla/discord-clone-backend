@@ -1,3 +1,4 @@
+# app/__init__.py
 from flask import Flask
 from flask_cors import CORS
 from config import Config
@@ -5,6 +6,10 @@ from .routes.user_bp import user_bp
 from .routes.auth_bp import auth_bp
 from .routes.error_handlers import errors
 from .routes.server_bp import server_bp
+from .models.server_model import Server
+from .controllers.server_controller import (
+    ServerController,
+)
 
 
 def init_app():
