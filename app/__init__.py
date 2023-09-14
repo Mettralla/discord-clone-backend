@@ -16,6 +16,6 @@ def init_app():
     app.register_blueprint(auth_bp, url_prefix= '/auth')
     app.register_blueprint(errors)
     app.register_blueprint(server_bp, url_prefix="/server")
-    app.register_blueprint(message_bp, url_prefix= '/message')
+    app.register_blueprint(message_bp, url_prefix= '/messages')
 
     return app
