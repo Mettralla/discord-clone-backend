@@ -56,8 +56,8 @@ class Server:
                 owner_id=server_data[3],
             )
             return server
-        else:
-            return None
+
+        return None
 
     @classmethod
     def update_server(cls, server_id, params):

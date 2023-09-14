@@ -41,8 +41,8 @@ class ServerController:
             response["servers"] = servers_list
             response["total"] = len(servers_list)
             return jsonify(response), 200
-        else:
-            return jsonify(response), 200
+
+        return jsonify(response), 200
 
     @classmethod
     def get_server(cls, server_id):
@@ -56,15 +56,26 @@ class ServerController:
                 "owner_id": server.owner_id,
             }
             return jsonify(server_dict), 200
-        else:
-            raise NotFound(server_id, "server")
+
+        raise NotFound(server_id, "server")
 
     @classmethod
     def update_server(cls, server_id):
         """Update Server"""
         update_data = request.json
-        Server.update_server(server_id, update_data)
-        return jsonify({"message": "Server updated successfully"}), 200
+        updated_fields = {}
+
+        if "server_name" in update_data:
+            updated_fields["server_name"] = update_data["server_name"]
+
+        if "server_description" in update_data:
+            updated_fields["server_description"] = update_data["server_description"]
+
+        if updated_fields:
+            Server.update_server(server_id, updated_fields)
+            return jsonify({"message": "Server updated successfully"}), 200
+
+        return jsonify({"message": "No valid fields to update"}), 400
 
     @classmethod
     def delete_server(cls, server_id):
@@ -72,5 +83,5 @@ class ServerController:
         if Server.get_server(server_id):
             Server.delete_server(server_id)
             return jsonify({"message": "Server deleted successfully"}), 204
-        else:
-            raise NotFound(server_id, "server")
+
+        raise NotFound(server_id, "server")
