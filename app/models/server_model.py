@@ -2,12 +2,13 @@
 
 from ..database import DatabaseConnection
 
+
 class Server:
     def __init__(self, **kwargs):
-        self.server_id = kwargs.get('server_id', None)
-        self.server_name = kwargs.get('server_name', None)
-        self.server_description = kwargs.get('server_description', None)
-        self.owner_id = kwargs.get('owner_id', None)
+        self.server_id = kwargs.get("server_id", None)
+        self.server_name = kwargs.get("server_name", None)
+        self.server_description = kwargs.get("server_description", None)
+        self.owner_id = kwargs.get("owner_id", None)
 
     @classmethod
     def create_server(cls, server):
@@ -32,7 +33,7 @@ class Server:
                 server_id=server[0],
                 server_name=server[1],
                 server_description=server[2],
-                owner_id=server[3]
+                owner_id=server[3],
             )
             servers_list.append(server_data)
 
@@ -47,7 +48,7 @@ class Server:
                 server_id=server_data[0],
                 server_name=server_data[1],
                 server_description=server_data[2],
-                owner_id=server_data[3]
+                owner_id=server_data[3],
             )
             return server
         else:
@@ -56,7 +57,10 @@ class Server:
     @classmethod
     def update_server(cls, server_id, params):
         query = "UPDATE servers SET server_name = %s, server_description = %s WHERE server_id = %s"
-        DatabaseConnection.execute_query(query, (params.get("server_name"), params.get("server_description"), server_id))
+        DatabaseConnection.execute_query(
+            query,
+            (params.get("server_name"), params.get("server_description"), server_id),
+        )
 
     @classmethod
     def delete_server(cls, server_id):

@@ -4,6 +4,7 @@ from flask import request, jsonify
 from ..models.server_model import Server
 from ..models.exceptions import NotFound
 
+
 class ServerController:
     @classmethod
     def create_server(cls):
@@ -11,7 +12,7 @@ class ServerController:
         server = Server(
             server_name=server_data.get("server_name"),
             server_description=server_data.get("server_description"),
-            owner_id=server_data.get("owner_id")
+            owner_id=server_data.get("owner_id"),
         )
         Server.create_server(server)
         return jsonify({"message": "Server created successfully"}), 201
@@ -29,7 +30,7 @@ class ServerController:
                     "server_id": server.server_id,
                     "server_name": server.server_name,
                     "server_description": server.server_description,
-                    "owner_id": server.owner_id
+                    "owner_id": server.owner_id,
                 }
                 servers_list.append(server_dict)
 
@@ -47,7 +48,7 @@ class ServerController:
                 "server_id": server.server_id,
                 "server_name": server.server_name,
                 "server_description": server.server_description,
-                "owner_id": server.owner_id
+                "owner_id": server.owner_id,
             }
             return jsonify(server_dict), 200
         else:
