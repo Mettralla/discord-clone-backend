@@ -11,9 +11,9 @@ def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER)
     CORS(app, supports_credentials=True)
     app.config.from_object(Config)
-    #BLUEPRINTS ------------
-    app.register_blueprint(user_bp, url_prefix= '/users')
-    app.register_blueprint(auth_bp, url_prefix= '/auth')
+    # BLUEPRINTS ------------
+    app.register_blueprint(user_bp, url_prefix="/users")
+    app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(errors)
     app.register_blueprint(server_bp, url_prefix="/server")
 
