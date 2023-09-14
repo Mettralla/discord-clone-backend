@@ -6,11 +6,7 @@ from .routes.user_bp import user_bp
 from .routes.auth_bp import auth_bp
 from .routes.error_handlers import errors
 from .routes.server_bp import server_bp
-from .routes.message_bp import message_bpfrom .models.server_model import Server
-from .controllers.server_controller import (
-    ServerController,
-)
-
+from .routes.message_bp import message_bp
 
 def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER)
