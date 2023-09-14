@@ -42,12 +42,18 @@ class Message:
             msg_list.append(msg_data)
         
         return msg_list
+    
+    @classmethod
+    def delete_message(cls, message_id) -> None:
+        query = "DELETE FROM messages WHERE message_id = %s"
+        DatabaseConnection.execute_query(query, (message_id,))
 
     @classmethod
     def exist(cls, msg_id: int):
         query = "SELECT 1 FROM messages WHERE message_id = %s"
         result = DatabaseConnection.fetch_one(query, (msg_id,))
         return result is not None
+        
     
     def serialize(self):
         return {

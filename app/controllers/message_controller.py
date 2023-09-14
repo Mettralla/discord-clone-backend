@@ -27,3 +27,16 @@ class MessageController:
             return jsonify(response), 200
         else:
             return jsonify(response), 200
+    
+    @classmethod
+    def delete_message(cls, message_id):
+        if not Message.exist(message_id):
+            raise NotFound(message_id, "message")
+        
+        msg = Message.get_message(message_id)
+        
+        if session['user_id'] == msg.user_id:
+            Message.delete_message(message_id)
+            return jsonify({'message': 'Message deleted successfully'}), 204
+        else:
+            raise ForbiddenAction()

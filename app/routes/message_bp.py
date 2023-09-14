@@ -7,3 +7,4 @@ message_bp = Blueprint('message_bp', __name__)
 #Ejemplo
 message_bp.route('/<int:message_id>', methods = ['GET'])(AuthController.login_required(MessageController.get_message))
 message_bp.route('', methods = ['GET'])(AuthController.login_required(MessageController.get_messages))
+message_bp.route('/<int:message_id>', methods = ['DELETE'])(AuthController.login_required(MessageController.delete_message))
