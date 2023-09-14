@@ -6,7 +6,7 @@ from .routes.user_bp import user_bp
 from .routes.auth_bp import auth_bp
 from .routes.error_handlers import errors
 from .routes.server_bp import server_bp
-from .models.server_model import Server
+from .routes.message_bp import message_bpfrom .models.server_model import Server
 from .controllers.server_controller import (
     ServerController,
 )
@@ -21,5 +21,6 @@ def init_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(errors)
     app.register_blueprint(server_bp, url_prefix="/server")
+    app.register_blueprint(message_bp, url_prefix= '/messages')
 
     return app
