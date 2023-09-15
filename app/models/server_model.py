@@ -1,6 +1,7 @@
 """Server Model"""
 
 from ..database import DatabaseConnection
+from ..models.exceptions import InvalidDataError
 
 
 class Server:
@@ -73,3 +74,28 @@ class Server:
         """Delete Server"""
         query = "DELETE FROM servers WHERE server_id = %s"
         DatabaseConnection.execute_query(query, (server_id,))
+
+    @classmethod
+    def validate_data(cls, data):
+        """Validate server data"""
+        server_name = data.get("server_name", None)
+        server_description = data.get("server_description", None)
+        owner_id = data.get("owner_id", None)
+
+        if server_name and len(server_name) < 5:
+            raise InvalidDataError("Server name must have at least 5 characters")
+
+        if owner_id is not None and not isinstance(owner_id, int):
+            raise InvalidDataError("Owner Id must be an integer")
+
+        return Server(
+            server_name=server_name,
+            server_description=server_description,
+            owner_id=owner_id,
+        )
+
+    @classmethod
+    def exist(cls, server_id):
+        query = "SELECT 1 FROM servers WHERE server_id = %s"
+        result = DatabaseConnection.fetch_one(query, (server_id,))
+        return result is not None
