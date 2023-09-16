@@ -24,8 +24,10 @@ class InvalidDataError(CustomException):
         self.status_code = 400
         self.name = name
 
-class UsernameConflictError(CustomException):
-    def __init__(self, name="Username Conflict", description="Username is already taken"):
+class NameConflictError(CustomException):
+    def __init__(self, model: str, attribute: str , value:str):
+        name = f"{model.capitalize()} Conflict Error"
+        description = f"{attribute.capitalize()} {value} is already taken"
         super().__init__(409, name, description)
         self.description = description
         self.status_code = 409

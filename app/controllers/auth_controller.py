@@ -1,5 +1,5 @@
 from ..models.user_model import User
-from ..models.exceptions import UsernameConflictError, UnauthorizedAccess, InvalidDataError
+from ..models.exceptions import NameConflictError, UnauthorizedAccess, InvalidDataError
 from functools import wraps
 from flask import request, jsonify, session
 
@@ -11,7 +11,7 @@ class AuthController:
         new_user = User.validate_data(user_data)
 
         if User.check_user(user_data.get('username')):
-            raise UsernameConflictError()
+            raise NameConflictError('user', 'username', user_data.get('username'))
 
         User.create_user(new_user)
         return jsonify({'message': 'User created successfully'}), 201
