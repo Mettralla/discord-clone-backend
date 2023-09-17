@@ -96,6 +96,14 @@ class Server:
 
     @classmethod
     def exist(cls, server_id):
+        """Exists"""
         query = "SELECT 1 FROM servers WHERE server_id = %s"
         result = DatabaseConnection.fetch_one(query, (server_id,))
+        return result is not None
+
+    @classmethod
+    def exists_by_name(cls, server_name):
+        """Check Exists Server Name"""
+        query = "SELECT 1 FROM servers WHERE server_name = %s"
+        result = DatabaseConnection.fetch_one(query, (server_name,))
         return result is not None
