@@ -8,6 +8,7 @@ from .routes.auth_bp import auth_bp
 from .routes.error_handlers import errors
 from .routes.server_bp import server_bp
 from .routes.message_bp import message_bp
+from .routes.t_channel_bp import t_channel_bp
 
 def init_app():
     app = Flask(__name__, static_folder=Config.STATIC_FOLDER)
@@ -20,4 +21,5 @@ def init_app():
     app.register_blueprint(server_bp, url_prefix="/server")
     app.register_blueprint(message_bp, url_prefix= '/messages')
 
+    app.register_blueprint(t_channel_bp, url_prefix= '/tchannels')
     return app
