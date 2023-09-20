@@ -3,20 +3,20 @@
 from flask import request, jsonify, session
 from ..models.server_model import Server
 from ..models.exceptions import NotFound, ForbiddenAction
-from ..controllers.auth_controller import AuthController
 
 
 class ServerController:
     """Class Server Controller"""
 
     @classmethod
-    @AuthController.login_required
     def create_server(cls):
         """Create Server"""
         server_data = request.json
         owner_id = session["user_id"]
 
-        # Validate data and create the server object
+        if Server.exists_by_name(server_data.get("server_name")):
+            return jsonify({"message": "Server with this name already exists"}), 400
+
         server = Server.validate_data(
             {
                 "server_name": server_data.get("server_name"),
@@ -25,12 +25,10 @@ class ServerController:
             }
         )
 
-        # Create the server in the database
         Server.create_server(server)
         return jsonify({"message": "Server created successfully"}), 201
 
     @classmethod
-    @AuthController.login_required
     def get_servers(cls):
         """Get Servers"""
         server_name = request.args.get("server_name")
@@ -55,7 +53,6 @@ class ServerController:
         return jsonify(response), 200
 
     @classmethod
-    @AuthController.login_required
     def get_server(cls, server_id):
         """Get Server"""
         server = Server.get_server(server_id)
@@ -71,14 +68,23 @@ class ServerController:
         raise NotFound(server_id, "server")
 
     @classmethod
-    @AuthController.login_required
     def update_server(cls, server_id):
         """Update Server"""
         update_data = request.json
         updated_fields = {}
 
         if "server_name" in update_data:
-            updated_fields["server_name"] = update_data["server_name"]
+            new_server_name = update_data["server_name"]
+            if Server.exists_by_name(new_server_name):
+                return jsonify({"message": "Server with this name already exists"}), 400
+
+            if len(new_server_name) < 5:
+                return (
+                    jsonify({"message": "Server name must have at least 5 characters"}),
+                    400,
+                )
+
+            updated_fields["server_name"] = new_server_name
 
         if "server_description" in update_data:
             updated_fields["server_description"] = update_data["server_description"]
@@ -97,7 +103,6 @@ class ServerController:
         return jsonify({"message": "No valid fields to update"}), 400
 
     @classmethod
-    @AuthController.login_required
     def delete_server(cls, server_id):
         """Delete Server"""
         if not Server.exist(server_id):
