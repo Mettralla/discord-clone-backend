@@ -2,7 +2,8 @@
 
 from flask import request, jsonify, session
 from ..models.server_model import Server
-from ..models.exceptions import NotFound, ForbiddenAction
+from ..models.user_model import User
+from ..models.exceptions import NotFound, ForbiddenAction, ServerError
 
 
 class ServerController:
@@ -26,6 +27,13 @@ class ServerController:
         )
 
         Server.create_server(server)
+
+        server_id = Server.get_last_server_created()
+
+        if server_id == None:
+            raise ServerError()
+
+        User.add_user_to_server((owner_id, server_id,))
         return jsonify({"message": "Server created successfully"}), 201
 
     @classmethod

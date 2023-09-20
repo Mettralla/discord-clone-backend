@@ -17,3 +17,9 @@ user_bp.route("/<int:user_id>", methods=["DELETE"])(
 user_bp.route("/<int:user_id>", methods=["PATCH"])(
     AuthController.login_required(UserController.update_user)
 )
+user_bp.route("/join", methods=["POST"])(
+    AuthController.login_required(UserController.add_user_to_server)
+)
+user_bp.route("/servers", methods=["GET"])(
+    AuthController.login_required(UserController.get_user_servers)
+)

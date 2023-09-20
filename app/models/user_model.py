@@ -65,6 +65,11 @@ class User:
             raise InvalidDataError("Password must have at least eight characters")
 
         return User(username=new_username, password=new_password)
+    
+    @classmethod
+    def add_user_to_server(cls, params):
+        query = "INSERT INTO user_servers (user_id, server_id) VALUES (%s, %s)"
+        DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def check_user(cls, username: str) -> bool:
