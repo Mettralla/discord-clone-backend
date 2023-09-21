@@ -16,7 +16,10 @@ class Server:
     @classmethod
     def create_server(cls, server):
         """Create Server"""
-        query = "INSERT INTO servers (server_name, server_description, owner_id) VALUES (%s, %s, %s)"
+        query = """
+            INSERT INTO servers (server_name, server_description, owner_id)
+            VALUES (%s, %s, %s)
+        """
         params = (server.server_name, server.server_description, server.owner_id)
         DatabaseConnection.execute_query(query, params)
 
@@ -24,10 +27,17 @@ class Server:
     def get_servers(cls, server_name=None):
         """Get Servers"""
         if server_name:
-            query = "SELECT server_id, server_name, server_description, owner_id FROM servers WHERE server_name LIKE %s"
+            query = """
+                SELECT server_id, server_name, server_description, owner_id
+                FROM servers
+                WHERE server_name LIKE %s
+            """
             params = (f"%{server_name}%",)
         else:
-            query = "SELECT server_id, server_name, server_description, owner_id FROM servers"
+            query = """
+                SELECT server_id, server_name, server_description, owner_id
+                FROM servers
+            """
             params = ()
 
         servers = DatabaseConnection.fetch_all(query, params)
@@ -47,7 +57,11 @@ class Server:
     @classmethod
     def get_server(cls, server_id):
         """Get Server"""
-        query = "SELECT server_id, server_name, server_description, owner_id FROM servers WHERE server_id = %s"
+        query = """
+            SELECT server_id, server_name, server_description, owner_id
+            FROM servers
+            WHERE server_id = %s
+        """
         server_data = DatabaseConnection.fetch_one(query, (server_id,))
         if server_data is not None:
             server = Server(

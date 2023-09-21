@@ -5,8 +5,11 @@ from ..models.channel_model import Channel
 
 
 class ChannelController:
+    """Class Channel Controller"""
+
     @classmethod
     def create_channel(cls):
+        """Create channel"""
         channel_data = request.json
         user_id = session.get("user_id")
 
@@ -29,6 +32,7 @@ class ChannelController:
 
     @classmethod
     def update_channel(cls, channel_id):
+        """Update channel"""
         update_data = request.json
 
         if not Channel.exists(channel_id):
@@ -55,6 +59,7 @@ class ChannelController:
 
     @classmethod
     def get_channels(cls):
+        """Get channels"""
         server_id = request.args.get("server_id")
         channels = Channel.get_channels(server_id)
         response = {"channels": [], "total": 0}
@@ -78,6 +83,7 @@ class ChannelController:
 
     @classmethod
     def get_channel(cls, channel_id):
+        """Get channel"""
         channel = Channel.get_channel(channel_id)
         if channel:
             channel_dict = {
@@ -92,10 +98,9 @@ class ChannelController:
 
     @classmethod
     def delete_channel(cls, channel_id):
+        """Delete channel"""
         if not Channel.exists(channel_id):
             return jsonify({"message": "Channel not found"}), 404
-
-        # Agregar verificación de permisos si es necesario
 
         Channel.delete_channel(channel_id)
         return jsonify({"message": "Channel deleted successfully"}), 204

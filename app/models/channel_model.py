@@ -5,6 +5,8 @@ from ..models.exceptions import InvalidDataError
 
 
 class Channel:
+    """Class Channel"""
+
     def __init__(self, **kwargs):
         self.channel_id = kwargs.get("channel_id", None)
         self.channel_name = kwargs.get("channel_name", None)
@@ -13,12 +15,14 @@ class Channel:
 
     @classmethod
     def create_channel(cls, channel):
+        """Create channel"""
         query = "INSERT INTO channels (channel_name, server_id, user_id) VALUES (%s, %s, %s)"
         params = (channel.channel_name, channel.server_id, channel.user_id)
         DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def update_channel(cls, channel_id, params):
+        """Update channel"""
         query = "UPDATE channels SET channel_name = %s WHERE channel_id = %s"
         DatabaseConnection.execute_query(
             query, (params.get("channel_name"), channel_id)
@@ -26,11 +30,19 @@ class Channel:
 
     @classmethod
     def get_channels(cls, server_id=None):
+        """Get channels"""
         if server_id:
-            query = "SELECT channel_id, channel_name, server_id, user_id FROM channels WHERE server_id = %s"
+            query = """
+                SELECT channel_id, channel_name, server_id, user_id
+                FROM channels
+                WHERE server_id = %s
+            """
             params = (server_id,)
         else:
-            query = "SELECT channel_id, channel_name, server_id, user_id FROM channels"
+            query = """
+                SELECT channel_id, channel_name, server_id, user_id
+                FROM channels
+            """
             params = ()
 
         channels = DatabaseConnection.fetch_all(query, params)
@@ -49,7 +61,14 @@ class Channel:
 
     @classmethod
     def get_channel(cls, channel_id):
-        query = "SELECT c.channel_id, c.channel_name, c.server_id, s.server_name, c.user_id, u.username FROM channels c INNER JOIN servers s ON c.server_id = s.server_id INNER JOIN users u ON c.user_id = u.user_id WHERE c.channel_id = %s"
+        """Get channel"""
+        query = """
+            SELECT c.channel_id, c.channel_name, c.server_id, s.server_name, c.user_id, u.username
+            FROM channels c
+            INNER JOIN servers s ON c.server_id = s.server_id
+            INNER JOIN users u ON c.user_id = u.user_id
+            WHERE c.channel_id = %s
+        """
         channel_data = DatabaseConnection.fetch_one(query, (channel_id,))
         if channel_data is not None:
             channel = Channel(
@@ -66,11 +85,13 @@ class Channel:
 
     @classmethod
     def delete_channel(cls, channel_id):
+        """Delete channel"""
         query = "DELETE FROM channels WHERE channel_id = %s"
         DatabaseConnection.execute_query(query, (channel_id,))
 
     @classmethod
     def validate_data(cls, data):
+        """Validate data"""
         channel_name = data.get("channel_name", None)
         server_id = data.get("server_id", None)
         user_id = data.get("user_id", None)
@@ -92,12 +113,14 @@ class Channel:
 
     @classmethod
     def exists(cls, channel_id):
+        """Exists"""
         query = "SELECT 1 FROM channels WHERE channel_id = %s"
         result = DatabaseConnection.fetch_one(query, (channel_id,))
         return result is not None
 
     @classmethod
     def exists_by_name(cls, channel_name):
+        """Check exists channel name"""
         query = "SELECT 1 FROM channels WHERE channel_name = %s"
         result = DatabaseConnection.fetch_one(query, (channel_name,))
         return result is not None
