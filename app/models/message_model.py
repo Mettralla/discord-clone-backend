@@ -9,6 +9,7 @@ class Message:
         self.channel_id = kwargs.get('channel_id', None)
         self.creation_date = kwargs.get('creation_date', None)
         self.update_date = kwargs.get('update_date', None)
+        self.username = kwargs.get('username', None)
         
     @classmethod
     def get_message(cls, msg_id):
@@ -27,7 +28,7 @@ class Message:
 
     @classmethod
     def get_messages(cls, channel_id) -> list['Message']:
-        query = "SELECT * FROM messages WHERE channel_id = %s"
+        query = "SELECT messages.message_id, messages.message_body, messages.user_id, messages.channel_id, messages.creation_date, messages.update_date, users.username FROM messages JOIN users ON messages.user_id = users.user_id WHERE channel_id = %s"
         msgs = DatabaseConnection.fetch_all(query, (channel_id,))
         
         msg_list = []
@@ -38,7 +39,8 @@ class Message:
                 user_id = msg[2],
                 channel_id = msg[3],
                 creation_date = msg[4],
-                update_date = msg[5]
+                update_date = msg[5],
+                username = msg[6]
             )
             msg_list.append(msg_data)
         
@@ -90,5 +92,6 @@ class Message:
             'user_id': self.user_id,
             'channel_id': self.channel_id,
             'creation_date': self.creation_date,
-            'update_date': self.update_date
+            'update_date': self.update_date,
+            'username': self.username
         }
