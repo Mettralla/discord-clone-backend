@@ -1,5 +1,5 @@
 from ..models.user_model import User
-from ..models.exceptions import NameConflictError, UnauthorizedAccess, InvalidDataError
+from ..models.exceptions import NameConflictError, UnauthorizedAccess, InvalidDataError, NotFound
 from functools import wraps
 from flask import request, jsonify, session
 
@@ -34,6 +34,15 @@ class AuthController:
     def logout(cls):
         session.pop('user_id', None)
         return jsonify({'message': 'Cierre de sesión exitoso'}), 200
+    
+    @classmethod
+    def show_profile(cls):
+        user_id = session.get('user_id')
+        user = User.get_user(user_id)
+        if user is None:
+            return NotFound(user_id, "user")
+        else:
+            return jsonify(user.serialize()), 200
 
     @classmethod
     def login_required(cls, func):

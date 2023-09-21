@@ -121,3 +121,31 @@ class Server:
         query = "SELECT 1 FROM servers WHERE server_name = %s"
         result = DatabaseConnection.fetch_one(query, (server_name,))
         return result is not None
+
+    @classmethod
+    def get_last_server_created(cls):
+        query = "SELECT server_id FROM servers WHERE server_id = LAST_INSERT_ID();"
+        result = DatabaseConnection.fetch_one(query)
+        return result[0]
+        
+    @classmethod
+    def get_user_servers(cls, params) -> list['Server']:
+        """Get Servers"""
+        query = """SELECT servers.server_id, servers.server_name, servers.server_description, servers.owner_id
+            FROM user_servers JOIN servers ON user_servers.server_id = servers.server_id WHERE user_servers.user_id = %s"""
+        servers = DatabaseConnection.fetch_all(query, params)
+
+        servers_list = []
+        for server in servers:
+            server_data = Server(
+                server_id=server[0],
+                server_name=server[1],
+                server_description=server[2],
+                owner_id=server[3],
+            )
+            servers_list.append(server_data)
+
+        return servers_list
+    
+    def serialize(self) -> dict:
+        return { "server_id": self.server_id, "server_name": self.server_name, "server_description": self.server_description, "owner_id": self.owner_id,}

@@ -1,4 +1,5 @@
 from ..models.user_model import User
+from ..models.server_model import Server
 from flask import request, jsonify, session
 from ..models.exceptions import NotFound, ForbiddenAction
 
@@ -62,3 +63,31 @@ class UserController:
             return jsonify({"message": "User updated successfully"}), 200
         else:
             raise ForbiddenAction()
+    
+    @classmethod
+    def add_user_to_server(cls):
+        user_id = session["user_id"]
+        server_id = request.args.get("server_id", None)
+        if server_id == None:
+            server_id = Server.get_last_server_created()
+        User.add_user_to_server((user_id, server_id))
+        return jsonify({"message": "User added"}), 201
+    
+    @classmethod
+    def get_user_servers(cls):
+        """Get Servers an User is in"""
+        user_id = session["user_id"]
+        servers = Server.get_user_servers((user_id,))
+        response = {"servers": [], "total": 0}
+
+        if servers:
+            servers_list = []
+            for server in servers:
+                servers_list.append(server.serialize())
+
+            response["servers"] = servers_list
+            response["total"] = len(servers_list)
+            return jsonify(response), 200
+
+        return jsonify(response), 200
+        
