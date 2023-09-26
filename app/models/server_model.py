@@ -12,6 +12,8 @@ class Server:
         self.server_name = kwargs.get("server_name", None)
         self.server_description = kwargs.get("server_description", None)
         self.owner_id = kwargs.get("owner_id", None)
+        self.owner_username = kwargs.get("owner_username", None)
+        self.members = kwargs.get("members", None)
 
     @classmethod
     def create_server(cls, server):
@@ -28,15 +30,45 @@ class Server:
         """Get Servers"""
         if server_name:
             query = """
-                SELECT server_id, server_name, server_description, owner_id
-                FROM servers
+                SELECT
+                    servers.server_id,
+                    servers.server_name,
+                    servers.server_description,
+                    servers.owner_id,
+                    users.username AS owner_username,
+                    COUNT(users.user_id) AS members
+                FROM
+                    servers
+                LEFT JOIN
+                    user_servers ON servers.server_id = user_servers.server_id
+                LEFT JOIN
+                    users ON user_servers.user_id = users.user_id
                 WHERE server_name LIKE %s
+                GROUP BY
+                    servers.server_id,
+                    servers.server_name,
+                    servers.server_description
             """
             params = (f"%{server_name}%",)
         else:
             query = """
-                SELECT server_id, server_name, server_description, owner_id
-                FROM servers
+                SELECT
+                    servers.server_id,
+                    servers.server_name,
+                    servers.server_description,
+                    servers.owner_id,
+                    users.username AS owner_username,
+                    COUNT(users.user_id) AS members
+                FROM
+                    servers
+                LEFT JOIN
+                    user_servers ON servers.server_id = user_servers.server_id
+                LEFT JOIN
+                    users ON user_servers.user_id = users.user_id
+                GROUP BY
+                    servers.server_id,
+                    servers.server_name,
+                    servers.server_description;
             """
             params = ()
 
@@ -49,6 +81,8 @@ class Server:
                 server_name=server[1],
                 server_description=server[2],
                 owner_id=server[3],
+                owner_username=server[4],
+                members=server[5]
             )
             servers_list.append(server_data)
 

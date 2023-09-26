@@ -51,6 +51,8 @@ class ServerController:
                     "server_name": server.server_name,
                     "server_description": server.server_description,
                     "owner_id": server.owner_id,
+                    "owner_username": server.owner_username,
+                    "members": server.members,
                 }
                 servers_list.append(server_dict)
 
