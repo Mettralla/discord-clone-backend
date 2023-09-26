@@ -52,6 +52,11 @@ class User:
     def update_user(cls, params: tuple):
         query = "UPDATE users SET username = %s, image = %s WHERE user_id = %s"
         DatabaseConnection.execute_query(query, params)
+        
+    @classmethod
+    def update_password(cls, params: tuple):
+        query = "UPDATE users SET password_digest = %s WHERE user_id = %s"
+        DatabaseConnection.execute_query(query, params)
 
     @classmethod
     def validate_data(cls, data) -> "User":

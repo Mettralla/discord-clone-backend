@@ -1,7 +1,8 @@
 from ..models.user_model import User
-from ..models.exceptions import NameConflictError, UnauthorizedAccess, InvalidDataError, NotFound
+from ..models.exceptions import NameConflictError, UnauthorizedAccess, InvalidDataError, NotFound, ForbiddenAction
 from functools import wraps
 from flask import request, jsonify, session
+from werkzeug.security import generate_password_hash
 
 
 class AuthController:
@@ -53,4 +54,17 @@ class AuthController:
             return func(*args, **kwargs)
         return decorated_view
     
+    
+    @classmethod
+    def change_password(cls):
+        user_data = request.json
+        old_password = user_data.get('old_password')
+        new_password = user_data.get('new_password')
+        user = User.get_user(session['user_id'])
+        user.password = old_password
+        if user.is_registered():
+            User.update_password((generate_password_hash(new_password), session['user_id']))
+            return jsonify({"message": "User updated successfully"}), 200
+        else:
+            raise ForbiddenAction()
     
