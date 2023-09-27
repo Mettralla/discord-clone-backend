@@ -61,7 +61,7 @@ class UserController:
             if 'image' in update_data:
                 base64_image_data = update_data['image']
                 image_data = base64.b64decode(base64_image_data.split(',')[1])
-                filename = 'froog2.jpg'
+                filename = f'{og_user.username}_av.jpg'
                 image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
                 with open(image_path, 'wb') as f:
                     f.write(image_data)
