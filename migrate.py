@@ -17,7 +17,7 @@ user = """CREATE table IF NOT EXISTS users(
     password_digest VARCHAR(255) NOT NULL,
     email VARCHAR(120),
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    image VARCHAR(45)
+    image VARCHAR(255)
 )"""
 
 server = """CREATE table IF NOT EXISTS servers(

@@ -1,6 +1,7 @@
 from ..database import DatabaseConnection
 from ..models.exceptions import InvalidDataError
 from werkzeug.security import check_password_hash, generate_password_hash
+from config import Config
 
 
 class User:
@@ -101,3 +102,8 @@ class User:
 
     def serialize(self) -> dict:
         return {"user_id": self.user_id, "username": self.username, "image": self.image}
+    
+    @classmethod
+    def allowed_file(cls, filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in Config["ALLOWED_EXTENSIONS"]
+        

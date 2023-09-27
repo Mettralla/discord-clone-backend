@@ -2,6 +2,10 @@ from ..models.user_model import User
 from ..models.server_model import Server
 from flask import request, jsonify, session
 from ..models.exceptions import NotFound, ForbiddenAction
+from werkzeug.utils import secure_filename
+import os
+from config import Config
+import base64
 
 
 class UserController:
@@ -52,11 +56,20 @@ class UserController:
         if session["user_id"] == user_id:
             update_data = request.json
             og_user = User.get_user(user_id)
+            image_path = og_user.image
+            
+            if 'image' in update_data:
+                base64_image_data = update_data['image']
+                image_data = base64.b64decode(base64_image_data.split(',')[1])
+                filename = 'froog2.jpg'
+                image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
+                with open(image_path, 'wb') as f:
+                    f.write(image_data)
 
             User.update_user(
                 (
                     update_data.get("username", og_user.username),
-                    update_data.get("image", og_user.image),
+                    image_path,
                     user_id,
                 )
             )
@@ -90,4 +103,4 @@ class UserController:
             return jsonify(response), 200
 
         return jsonify(response), 200
-        
+    
