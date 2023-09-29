@@ -16,9 +16,9 @@ Este repositorio se enfoca en el desarrollo de una aplicación web de mensajerí
 
 Antes de ejecutar el proyecto, es necesario clonar ambos repositorios (frontend y backend) en la misma raíz. A continuación, encontrarás los enlaces a los repositorios:
 
-- Frontend: El frontend de la aplicación está desarrollado utilizando HTML, CSS y JavaScript. Puedes encontrar el código fuente en el siguiente repositorio: Enlace al Repositorio Frontend
+- Frontend: El frontend de la aplicación está desarrollado utilizando HTML, CSS y JavaScript. Puedes encontrar el código fuente en el siguiente repositorio: [Enlace al Repositorio Frontend](https://github.com/Mettralla/discord-clone-frontend/tree/main)
 
-- Backend: El backend de la aplicación está implementado con Flask. Puedes acceder al código fuente en el repositorio dedicado: Enlace al Repositorio Backend
+- Backend: El backend de la aplicación está implementado con Flask. Puedes acceder al código fuente en el repositorio dedicado: [Enlace al Repositorio Backend](https://github.com/Mettralla/discord-clone-backend/tree/main) 
 
 Para obtener información detallada sobre cómo configurar y ejecutar el proyecto, consulta la sección [Instalación/Ejecucion](#getting_started) a continuación.
 
@@ -126,7 +126,7 @@ Iniciar live server en index.html
 ## ⛏️ Base de datos <a name = "der"></a>
 
 <p align="center">
- <img src=https://drive.google.com/uc?export=view&id=1jsPq7SZ-81qWtVzpnBVNL5HvJHHvHyek alt="Banner"></a>
+ <img src=https://drive.google.com/uc?export=view&id=1DBGKTcxXFvfMfp5bTjz4mP8Fu_uI7svf alt="Banner"></a>
 </p>
 
 ## ✍️ Autores <a name = "authors"></a>
