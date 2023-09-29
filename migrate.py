@@ -15,7 +15,6 @@ user = """CREATE table IF NOT EXISTS users(
     user_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password_digest VARCHAR(255) NOT NULL,
-    email VARCHAR(120),
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     image VARCHAR(255)
 )"""
